@@ -1,6 +1,8 @@
 const express = require('express');
 const { getTalkers } = require('../services/getAllTalkers');
 const generateToken = require('../services/generateToken');
+const emailValidation = require('../middlewares/emailValidation');
+const passwordValidation = require('../middlewares/passwordValidation');
 
 const router = express.Router();
 
@@ -24,7 +26,7 @@ router.get('/talker/:id', async (req, res) => {
     res.status(200).json(talkerId);
   });
 
-router.post('/login', (req, res) => {
+router.post('/login', emailValidation, passwordValidation, (req, res) => {
     const token = generateToken();
     res.status(200).json({ token });
 });
