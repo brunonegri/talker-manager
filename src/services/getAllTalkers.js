@@ -18,4 +18,6 @@ const readTalkerFile = async () => {
     return data;
   };
 
-module.exports = { getTalkers };
+  const updateTalkers = (talker) => fs.writeFile(file, JSON.stringify(talker));
+
+module.exports = { getTalkers, updateTalkers };
