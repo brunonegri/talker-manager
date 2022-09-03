@@ -22,6 +22,13 @@ router.get('/talker', async (req, res) => {
     
     res.status(200).json(talkers);
   });
+
+  router.get('/talker/search', authValidation, async (req, res) => {
+    const { q } = req.query;
+    const talkers = await getTalkers();
+    const searched = talkers.filter((e) => (e.name).includes(q));
+    return res.status(200).json(searched);
+});
   
 router.get('/talker/:id', async (req, res) => {
     const { id } = req.params;
