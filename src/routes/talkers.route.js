@@ -10,6 +10,7 @@ const ageValidation = require('../middlewares/ageValidation');
 const talkValidation = require('../middlewares/talkValidation');
 const watchedValidation = require('../middlewares/watchedValidation');
 const rateValidation = require('../middlewares/rateValidation');
+const editTalker = require('../services/editTalker');
 
 const router = express.Router();
 
@@ -49,6 +50,19 @@ async (req, res) => {
     const newTalker = req.body;
     const talkers = await insertTalker(newTalker);
     res.status(201).json(talkers);
+});
+
+router.put('/talker/:id',
+authValidation,
+nameValidation, 
+ageValidation,
+talkValidation,
+watchedValidation,
+rateValidation,
+ async (req, res) => {
+    const { id } = req.params;
+    const editTalk = await editTalker(id, req.body);
+    res.status(200).json(editTalk);
 });
 
 module.exports = router;
