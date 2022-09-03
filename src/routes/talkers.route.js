@@ -3,6 +3,13 @@ const { getTalkers } = require('../services/getAllTalkers');
 const generateToken = require('../services/generateToken');
 const emailValidation = require('../middlewares/emailValidation');
 const passwordValidation = require('../middlewares/passwordValidation');
+const insertTalker = require('../services/insertTalker');
+const authValidation = require('../middlewares/authValidaton');
+const nameValidation = require('../middlewares/nameValidation');
+const ageValidation = require('../middlewares/ageValidation');
+const talkValidation = require('../middlewares/talkValidation');
+const watchedValidation = require('../middlewares/watchedValidation');
+const rateValidation = require('../middlewares/rateValidation');
 
 const router = express.Router();
 
@@ -29,6 +36,19 @@ router.get('/talker/:id', async (req, res) => {
 router.post('/login', emailValidation, passwordValidation, (req, res) => {
     const token = generateToken();
     res.status(200).json({ token });
+});
+
+router.post('/talker',
+authValidation,
+nameValidation, 
+ageValidation,
+talkValidation,
+watchedValidation,
+rateValidation,
+async (req, res) => {
+    const newTalker = req.body;
+    const talkers = await insertTalker(newTalker);
+    res.status(201).json(talkers);
 });
 
 module.exports = router;
